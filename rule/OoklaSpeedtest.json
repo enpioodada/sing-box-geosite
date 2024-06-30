@@ -679,7 +679,6 @@
         "host02.genesysnet.com.br",
         "host1st.acn.ht",
         "hostbox.on2cloud.com",
-        "hosts.ooklaserver.net",
         "hou.speedtest.sbcglobal.net",
         "hou.speedtest.t-mobile.com",
         "houston.speedtest.brightspeed.com",
@@ -6614,7 +6613,6 @@
         "speedtest.nepafiber.com",
         "speedtest.nescmn.net",
         "speedtest.nessus.at",
-        "speedtest.net",
         "speedtest.net-city.net",
         "speedtest.net-d-sign.de",
         "speedtest.net-nord.ru",
@@ -11976,8 +11974,8 @@
     },
     {
       "domain_suffix": [
-        ".hosts.ooklaserver.net",
-        ".speedtest.net"
+        "hosts.ooklaserver.net",
+        "speedtest.net"
       ]
     },
     {
