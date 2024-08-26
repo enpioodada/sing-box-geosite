@@ -46,6 +46,8 @@ jobs:
           git commit -m "Update rules"
           git push
         fi
+
+
     - name: Delete old workflow runs
         uses: Mattraks/delete-workflow-runs@v2
         with:
