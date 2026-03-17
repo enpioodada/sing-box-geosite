@@ -4,7 +4,12 @@
                 "domain": [
                     "ghproxy.com",
                     "cdn.jsdelivr.net",
-                    "testingcf.jsdelivr.net"
+                    "testingcf.jsdelivr.net",
+                    "ping.ui.com",
+                    "hdsky.me",
+                    "hdsky.my",
+                    "ourbits.club",
+                    "ourhelp.club"
                ]
     },
     {
