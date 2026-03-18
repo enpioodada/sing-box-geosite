@@ -194,7 +194,7 @@ def process_link(url: str):
 def main():
     os.makedirs(OUTPUT_DIR, exist_ok=True)
 
-    with open("../links.txt", "r") as f:
+    with open("links.txt", "r") as f:
         links = [
             line.strip()
             for line in f
