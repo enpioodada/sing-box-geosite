@@ -50,10 +50,12 @@ jobs:
           git config --global user.name github-actions
           git config --global user.email github-actions@github.com
 
-          git add rule/*.json rule/*.srs
+          git add rule/*.json rule/*.srs rule/*.txt
+
           if git diff --staged --quiet; then
             echo "No changes to commit"
             exit 0
           else
             git commit -m "Update rules"
             git push
+          fi
