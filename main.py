@@ -13,7 +13,7 @@ from concurrent.futures import ThreadPoolExecutor
 # 配置
 # ========================
 HEADERS = {'User-Agent': 'Mozilla/5.0'}
-OUTPUT_DIR = "./output"
+OUTPUT_DIR = "./rule"
 MAX_WORKERS = 10
 
 MAP_DICT = {
