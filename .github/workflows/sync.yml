@@ -1,66 +1,59 @@
-
-name: Config Update
+name: Sync Rules
 
 on:
   push:
-    branches: [ main ]
-  workflow_dispatch:
+    branches: [ main ]       # push 到 main 分支触发
+  workflow_dispatch:          # 手动触发
   schedule:
-    - cron: '0 12 * * *'
+    - cron: "0 12 * * *"     # 每天 12:00 定时触发
+
+concurrency:
+  group: rules
+  cancel-in-progress: true
 
 jobs:
   build:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v2
-    - name: "Setup sing-box"
-      env:
-        SING_BOX_DEB_URL: "https://github.com/SagerNet/sing-box/releases/download/v1.10.0-alpha.27/sing-box_1.10.0-alpha.27_linux_amd64.deb"
-      run: |
-          set -Eeuo pipefail
-          wget -O sing-box.deb $SING_BOX_DEB_URL
-          sudo dpkg -i sing-box.deb
-    - name: Set up Python3
-      uses: actions/setup-python@v2
-      with:
-        python-version: 3.x
-    - name: Install dependencies
-      run: |
-        python -m pip install --upgrade pip
-        pip install pandas requests pyyaml
-    - name: Download content
-      run: |
-        URL="https://raw.githubusercontent.com/AdguardTeam/AdguardFilters/master/BaseFilter/sections/adservers.txt"
-        OUTPUT_FILE="./rule/adservers.txt"
+      # 获取代码
+      - uses: actions/checkout@v4
 
-        curl -L $URL -o $OUTPUT_FILE
+      # 设置 Python
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: "pip"
 
-        if [ -f "$OUTPUT_FILE" ]; then
-          echo "Download successful: $OUTPUT_FILE"
-        else
-          echo "Download failed."
-          exit 1
-        fi
-    - name: Convert AdGuard DNS Filter to sing-box rule set
-      run: |
-        sing-box rule-set convert --type adguard --output ./rule/adservers.srs ./rule/adservers.txt
-    - name: Run script
-      run: python ../main.py
-      working-directory: ./rule/
-    - name: Commit and push config.json
-      run: |
-        git config --global user.email "action@github.com"
-        git config --global user.name "GitHub Action"
-        git add ./rule/*.json
-        git add ./rule/*.srs
-        git add ./rule/*.txt
+      # 安装依赖
+      - run: pip install -r requirements.txt
 
-        # 检查是否有文件被修改
-        if git diff --staged --quiet; then
-          echo "No changes to commit"
-          exit 0
-        else
-          git commit -m "Update rules"
-          git push
-        fi
+      # 安装 sing-box
+      - name: Install sing-box
+        run: |
+          VERSION="1.13.3"
+          curl -L https://github.com/SagerNet/sing-box/releases/download/v${VERSION}/sing-box-${VERSION}-linux-amd64.tar.gz -o sb.tar.gz
+          tar -xzf sb.tar.gz
+          sudo mv sing-box-*/sing-box /usr/local/bin/
+
+      # 确保输出目录存在
+      - name: Prepare output directory
+        run: mkdir -p rule
+
+      # 运行 main.py
+      - name: Run main.py
+        run: python main.py
+
+      # 提交并推送更新的 JSON/SRS 文件
+      - name: Commit and push
+        run: |
+          git config --global user.name github-actions
+          git config --global user.email github-actions@github.com
+
+          git add rule/*.json rule/*.srs rule/*.txt
+          if git diff --staged --quiet; then
+            echo "No changes to commit"
+            exit 0
+          else
+            git commit -m "Update rules"
+            git push
