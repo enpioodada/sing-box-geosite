@@ -30,14 +30,15 @@ jobs:
           tar -xzf sb.tar.gz
           sudo mv sing-box-*/sing-box /usr/local/bin/
 
-      - name: Run
-        run: python rule/main.py
+      # ✅ main.py 在根目录，rule/output 放到 rule 文件夹
+      - name: Run main.py
+        run: python main.py
 
       - name: Commit
         run: |
           git config --global user.name github-actions
           git config --global user.email github-actions@github.com
 
-          git add rule/output/*
+          git add rule/*.json rule/*.srs
           git diff --staged --quiet || git commit -m "update rules"
           git push
