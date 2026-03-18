@@ -1,0 +1,8 @@
+# requests 用于下载规则文件
+requests>=2.31.0
+
+# pyyaml 用于解析 YAML 规则
+PyYAML>=6.0
+
+# pandas 用于 DataFrame 数据处理
+pandas>=2.1.0
