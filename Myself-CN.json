@@ -16,6 +16,8 @@
     {
                 "domain_suffix": [
                     ".push.apple.com",
+                    "msftconnecttest.com",
+                    "msftncsi.com",
                     "api.120399.xyz",
                     "mgtv.ottiptv.cc",
                     "ping.ui.com",
